@@ -24,17 +24,44 @@ BINARIES_PATH			?= $(ROOT)/out/bin
 U-BOOT_PATH			?= $(ROOT)/u-boot
 QEMU_PATH			?= $(ROOT)/qemu
 QEMU_BUILD			?= $(QEMU_PATH)/build
+LIBOQS_PATH 		?= $(ROOT)/liboqs
 
 DEBUG = 1
 
 ################################################################################
 # Targets
 ################################################################################
-all: arm-tf u-boot buildroot linux optee-os qemu
-clean: arm-tf-clean u-boot-clean buildroot-clean linux-clean optee-os-clean \
+all: oqs arm-tf u-boot buildroot linux optee-os qemu
+clean: oqs-clean arm-tf-clean u-boot-clean buildroot-clean linux-clean optee-os-clean \
 	qemu-clean check-clean
 
 include toolchain.mk
+
+################################################################################
+# LIBOQS
+################################################################################
+oqs:
+	if [ ! -d $(LIBOQS_PATH)/build ]; then \
+		echo "Directory $(LIBOQS_PATH)/build non trovata. Creazione..."; \
+		mkdir -p $(LIBOQS_PATH)/build; \
+		cmake -S $(LIBOQS_PATH) -B $(LIBOQS_PATH)/build -DCMAKE_TOOLCHAIN_FILE=$(LIBOQS_PATH)/toolchain-arm.cmake \
+			-DCMAKE_C_COMPILER=$(AARCH32_CROSS_COMPILE) -DOQS_PERMIT_UNSUPPORTED_ARCHITECTURE=ON \
+			-DOQS_ENABLE_KEM_CLASSIC_MCELIECE:BOOL=OFF -DOQS_USE_OPENSSL=OFF -DOQS_BUILD_ONLY_LIB=ON; \
+	fi
+	$(MAKE) -C $(LIBOQS_PATH) \
+		TA_DEV_KIT_DIR=$(OPTEE_OS_PATH)/out/arm/export-ta_arm32 \
+		CROSS_COMPILE=$(AARCH32_CROSS_COMPILE) \
+		--no-builtin-variables
+	$(MAKE) -C $(LIBOQS_PATH) install \
+		TA_DEV_KIT_DIR=$(OPTEE_OS_PATH)/out/arm/export-ta_arm32
+
+
+
+oqs-clean:
+	$(MAKE) -C $(LIBOQS_PATH) clean \
+	TA_DEV_KIT_DIR=$(OPTEE_OS_PATH)/out/arm/export-ta_arm32
+	$(MAKE) -C $(LIBOQS_PATH) uninstall \
+	TA_DEV_KIT_DIR=$(OPTEE_OS_PATH)/out/arm/export-ta_arm32
 
 ################################################################################
 # ARM Trusted Firmware
