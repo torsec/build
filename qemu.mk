@@ -24,18 +24,47 @@ BINARIES_PATH			?= $(ROOT)/out/bin
 U-BOOT_PATH			?= $(ROOT)/u-boot
 QEMU_PATH			?= $(ROOT)/qemu
 QEMU_BUILD			?= $(QEMU_PATH)/build
-LIBOQS_PATH 		?= $(ROOT)/liboqs
+LIBOQS_PATH 			?= $(ROOT)/liboqs
+TPM2_TSS_PATH 			?= $(ROOT)/tpm2-tss-4.0.2.1
+TPM2_TOOLS_PATH 		?= $(ROOT)/tpm2-tools-5.7.1
+BUILDROOT_PATH			?= $(ROOT)/buildroot
 
 DEBUG = 1
 
 ################################################################################
 # Targets
 ################################################################################
-all: oqs arm-tf u-boot buildroot linux optee-os qemu
+all: tpm2-custom oqs arm-tf u-boot buildroot linux optee-os qemu
 clean: oqs-clean arm-tf-clean u-boot-clean buildroot-clean linux-clean optee-os-clean \
 	qemu-clean check-clean
 
 include toolchain.mk
+
+################################################################################
+# TPM2-TSS and TPM2-TOOLS custom implementation
+################################################################################
+tpm2-custom:
+	if [ ! -d "$(TPM2_TSS_PATH)" ]; then \
+		echo "Downloading TPM2-TSS..."; \
+		curl -L $(TPM2_TSS_URL) -o "$(ROOT)/tpm2-tss.tar.gz"; \
+		mkdir -p $(TPM2_TSS_PATH); \
+		tar -xf "$(ROOT)/tpm2-tss.tar.gz" -C $(TPM2_TSS_PATH) --strip-components=1; \
+		rm -f "$(ROOT)/tpm2-tss.tar.gz"; \
+		echo -e "TPM2_TSS_OVERRIDE_SRCDIR = $(TPM2_TSS_PATH)\n" >> $(BUILDROOT_PATH)/local.mk; \
+	else \
+		echo "TPM2-TSS already downloaded"; \
+	fi
+
+	if [ ! -d "$(TPM2_TOOLS_PATH)" ]; then \
+		echo "Downloading TPM2-TOOLS..."; \
+		curl -L $(TPM2_TOOLS_URL) -o "$(ROOT)/tpm2-tools.tar.gz"; \
+		mkdir -p $(TPM2_TOOLS_PATH); \
+		tar -xf "$(ROOT)/tpm2-tools.tar.gz" -C $(TPM2_TOOLS_PATH) --strip-components=1; \
+		rm -f "$(ROOT)/tpm2-tools.tar.gz"; \
+		echo -e "TPM2_TOOLS_OVERRIDE_SRCDIR = $(TPM2_TOOLS_PATH)" >> $(BUILDROOT_PATH)/local.mk; \
+	else \
+		echo "TPM2-TOOLS already downloaded"; \
+	fi
 
 ################################################################################
 # LIBOQS
