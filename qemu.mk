@@ -12,6 +12,9 @@ BR2_ROOTFS_OVERLAY = $(ROOT)/build/br-ext/board/qemu/overlay
 BR2_ROOTFS_POST_BUILD_SCRIPT = $(ROOT)/build/br-ext/board/qemu/post-build.sh
 BR2_ROOTFS_POST_SCRIPT_ARGS = "$(QEMU_VIRTFS_AUTOMOUNT) $(QEMU_VIRTFS_MOUNTPOINT) $(QEMU_PSS_AUTOMOUNT)"
 
+TPM2_TSS_URL = https://github.com/torsec/tpm2-tss/releases/download/4.0.2.1/tpm2-tss-4.0.2.1.tar.gz
+TPM2_TOOLS_URL = https://github.com/torsec/tpm2-tools/releases/download/5.7.1/tpm2-tools-5.7.1.tar.gz
+
 OPTEE_OS_PLATFORM = vexpress-qemu_virt
 
 include common.mk
