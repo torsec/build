@@ -12,8 +12,8 @@ BR2_ROOTFS_OVERLAY = $(ROOT)/build/br-ext/board/qemu/overlay
 BR2_ROOTFS_POST_BUILD_SCRIPT = $(ROOT)/build/br-ext/board/qemu/post-build.sh
 BR2_ROOTFS_POST_SCRIPT_ARGS = "$(QEMU_VIRTFS_AUTOMOUNT) $(QEMU_VIRTFS_MOUNTPOINT) $(QEMU_PSS_AUTOMOUNT)"
 
-TPM2_TSS_URL = https://github.com/torsec/tpm2-tss/releases/download/4.0.2.1/tpm2-tss-4.0.2.1.tar.gz
-TPM2_TOOLS_URL = https://github.com/torsec/tpm2-tools/releases/download/5.7.1/tpm2-tools-5.7.1.tar.gz
+TPM2_TSS_URL = https://github.com/torsec/tpm2-tss/releases/download/3.2.2.1/tpm2-tss-3.2.2.1.tar.gz
+TPM2_TOOLS_URL = https://github.com/torsec/tpm2-tools/releases/download/5.7.2/tpm2-tools-5.7.2.tar.gz
 
 OPTEE_OS_PLATFORM = vexpress-qemu_virt
 
@@ -28,8 +28,8 @@ U-BOOT_PATH			?= $(ROOT)/u-boot
 QEMU_PATH			?= $(ROOT)/qemu
 QEMU_BUILD			?= $(QEMU_PATH)/build
 LIBOQS_PATH 			?= $(ROOT)/liboqs
-TPM2_TSS_PATH 			?= $(ROOT)/tpm2-tss-4.0.2.1
-TPM2_TOOLS_PATH 		?= $(ROOT)/tpm2-tools-5.7.1
+TPM2_TSS_PATH 			?= $(ROOT)/tpm2-tss-3.2.2.1
+TPM2_TOOLS_PATH 		?= $(ROOT)/tpm2-tools-5.7.2
 BUILDROOT_PATH			?= $(ROOT)/buildroot
 
 DEBUG = 1
