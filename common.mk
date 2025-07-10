@@ -40,6 +40,7 @@ OPTEE_RUST_PATH			?= $(ROOT)/optee_rust
 OPTEE_FTPM_PATH			?= $(ROOT)/optee_ftpm
 BUILDROOT_TARGET_ROOT		?= $(ROOT)/out-br/target
 MS_TPM_20_REF_PATH		?= $(ROOT)/ms-tpm-20-ref
+RUST_KEYLIME_PATH		?= $(ROOT)/rust-keylime
 
 # default high verbosity. slow uarts shall specify lower if prefered
 CFG_TEE_CORE_LOG_LEVEL		?= 3
@@ -280,6 +281,7 @@ endif
 
 ifeq ($(MEASURED_BOOT_FTPM),y)
 DEFCONFIG_TSS ?= --br-defconfig build/br-ext/configs/tss
+DEFCONFIG_RUST_KEYLIME ?= --br-defconfig build/br-ext/configs/rust_keylime
 endif
 
 BR2_PER_PACKAGE_DIRECTORIES ?= y
@@ -291,6 +293,7 @@ BR2_PACKAGE_OPTEE_EXAMPLES_EXT ?= y
 BR2_PACKAGE_OPTEE_EXAMPLES_EXT_CROSS_COMPILE ?= $(CROSS_COMPILE_S_USER)
 BR2_PACKAGE_OPTEE_EXAMPLES_EXT_SDK ?= $(OPTEE_OS_TA_DEV_KIT_DIR)
 BR2_PACKAGE_OPTEE_EXAMPLES_EXT_SITE ?= $(OPTEE_EXAMPLES_PATH)
+BR2_PACKAGE_RUST_KEYLIME_EXT_SITE ?= $(RUST_KEYLIME_PATH)
 ifeq ($(ARCH),arm)
 ifeq ($(RUST_ENABLE),y)
 BR2_PACKAGE_OPTEE_RUST_EXAMPLES_EXT ?= y

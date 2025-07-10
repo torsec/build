@@ -1,0 +1,4 @@
+config BR2_PACKAGE_RUST_KEYLIME_EXT
+	bool "rust_keylime"
+	help
+	  https://github.com/keylime/rust-keylime
