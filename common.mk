@@ -365,6 +365,7 @@ buildroot: optee-os
 		$(DEFCONFIG_TSS) \
 		$(DEFCONFIG_TPM_MODULE) \
 		$(DEFCONFIG_FTPM) \
+		$(DEFCONFIG_RUST_KEYLIME) \
 		--br-defconfig out-br/extra.conf \
 		--make-cmd $(MAKE))
 	@$(MAKE) $(br-make-flags) -C ../out-br all
