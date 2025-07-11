@@ -13,6 +13,10 @@ define RUST_KEYLIME_EXT_INSTALL_TARGET_CMDS
     $(INSTALL) -D \
         $(@D)/target/$(RUSTC_TARGET_NAME)/release/keylime_agent \
         $(TARGET_DIR)/usr/bin/
+
+    mkdir -p $(TARGET_DIR)/var/lib/keylime
+
+    $(INSTALL) -D $(@D)/keylime-agent.conf $(TARGET_DIR)/var/lib/keylime/
 endef
 
 
