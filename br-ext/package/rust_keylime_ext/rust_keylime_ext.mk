@@ -16,7 +16,7 @@ define RUST_KEYLIME_EXT_INSTALL_TARGET_CMDS
 
     mkdir -p $(TARGET_DIR)/var/lib/keylime
 
-    $(INSTALL) -D $(@D)/keylime-agent.conf $(TARGET_DIR)/var/lib/keylime/
+    $(INSTALL) -D $(@D)/keylime-agent.conf $(TARGET_DIR)/etc/keylime/agent.conf
 endef
 
 
