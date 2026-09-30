@@ -334,6 +334,9 @@ BR2_PACKAGE_OPENSC ?= y
 # Embed keyutils for trusted-keys
 BR2_PACKAGE_KEYUTILS ?= y
 
+# Provo a mettere anche in common.mk
+BR2_PACKAGE_PROCPS_NG = y
+
 # All BR2_* variables from the makefile or the environment are appended to
 # ../out-br/extra.conf. All values are quoted "..." except y and n.
 double-quote = "#" # This really sets the variable to " and avoids upsetting vim's syntax highlighting
@@ -365,9 +368,10 @@ buildroot: optee-os
 		$(DEFCONFIG_TSS) \
 		$(DEFCONFIG_TPM_MODULE) \
 		$(DEFCONFIG_FTPM) \
+		$(DEFCONFIG_RUST_KEYLIME) \
 		--br-defconfig out-br/extra.conf \
 		--make-cmd $(MAKE))
-	@$(MAKE) $(br-make-flags) -C ../out-br all
+	@$(MAKE) $(br-make-flags) BR2_PACKAGE_PROCPS_NG=$(BR2_PACKAGE_PROCPS_NG) BR2_PACKAGE_LIBOPENSSL_BIN=y -C ../out-br all
 
 .PHONY: buildroot-clean
 buildroot-clean:

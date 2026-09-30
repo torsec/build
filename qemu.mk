@@ -17,6 +17,50 @@ TPM2_TOOLS_URL = https://github.com/torsec/tpm2-tools/releases/download/5.7.2/tp
 
 OPTEE_OS_PLATFORM = vexpress-qemu_virt
 
+# Enable fTPM
+MEASURED_BOOT_FTPM = y
+# Enable custom script for keylime configuration
+BR2_PACKAGE_CUSTOM_SCRIPT ?= y
+
+
+#Enable ssh per fare Attestazione Remota
+BR2_PACKAGE_OPENSSH ?= y
+
+#Enable openssl per lo script "trigger measurement" (keylime)
+BR2_PACKAGE_OPENSSL = y
+BR2_PACKAGE_LIBOPENSSL = y
+
+# Aggiungo altri package che mi servono
+BR2_PACKAGE_SUDO ?= y
+
+BR2_PACKAGE_PROCPS_NG = y
+
+#Aggiungo systemd (per systemctl)
+# Non usata per il momento (resto con BusyBox)
+#BR2_INIT_SYSTEMD ?= y
+
+
+# Aggiungo kill (in particolare pkill)
+#BR2_PACKAGE_PROCPS_NG ?= y
+
+# Prova a mettere KILL con questo
+#BR2_PACKAGE_UTIL_LINUX_KILL ?= y
+
+# Prova a mettere KILL con questo
+#CONFIG_PKILL = y
+
+#Prova a mettere BusyBox
+#BR2_INIT_BUSYBOX ?= y
+#BR2_PACKAGE_BUSYBOX ?= y
+
+#BR2_PACKAGE_BUSYBOX_CONFIG
+
+#BR2_PACKAGE_BUSYBOX_SHOW_OTHERS=y
+
+
+#BR2_PACKAGE_PROCPS_NG ?= y
+
+
 include common.mk
 
 ################################################################################
@@ -224,6 +268,9 @@ QEMU_BASE_ARGS += -m $(QEMU_MEM)
 QEMU_BASE_ARGS += -bios bl1.bin
 QEMU_BASE_ARGS += -machine virt,secure=on -cpu cortex-a15
 QEMU_BASE_ARGS += $(QEMU_EXTRA_ARGS)
+#QEMU_BASE_ARGS += -netdev user,id=net0,hostfwd=tcp::19002-:9002 -device virtio-net-device,netdev=net0
+#QEMU_BASE_ARGS += -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device virtio-net-device,netdev=net0 -serial mon:stdio
+
 
 QEMU_RUN_ARGS = $(QEMU_BASE_ARGS)
 QEMU_RUN_ARGS += $(QEMU_RUN_ARGS_COMMON)
